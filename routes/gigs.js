@@ -4,7 +4,7 @@ let Gig = require("../models/gig");
 
 
 //http:localhost:3001/gigs/create
-router.route("create").post((req,res) => {
+router.route("/create").post((req,res) => {
 
     const gigTitle = req.body.gigTitle;
     const gigCategory = req.body.gigCategory;
@@ -87,7 +87,7 @@ router.route("/update/:gigId").put(async(req,res) => {  //also can use post meth
 
         const update = await Gig.findByIdAndUpdate(gigID, updateGig).then(() =>{
             
-            res.status(200).send({status:"Gig Updated", Gig:update});
+            res.status(200).send({status:"Gig Updated"});
 
         }).catch((err) => {
             console.log(err);
@@ -113,9 +113,9 @@ router.route("/delete/:gigId").delete(async (req,res) => {
 router.route("/get/:gigId").get(async(req,res) =>{
 
     let gigID = req.params.gigId;
-    const Sgig = await Gig.findById(gigID)
-    .then(() => {
-        res.status(200).send({status:"Gig fetched", gig:Sgig })
+    await Gig.findById(gigID)
+    .then((gig) => {
+        res.status(200).send({status:"Gig fetched",gig})
     }).catch((err) => {
         console.log(err);
         res.status(500).send({status:"Error with get gig", error: err.message});

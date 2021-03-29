@@ -4,9 +4,7 @@
   "description": "Back-end of the project Mora Lancer which freelancing web application for UoM students",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "startmon" : "nodemon server.js"
-
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
