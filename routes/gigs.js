@@ -23,7 +23,6 @@ router.route("create").post((req,res) => {
         gigSearchTags,
         gigBasicPriceDesc,
         gigBasicPrice,
-        gigBasicPrice,
         gigStandardPriceDesc,
         gigStandardPrice,
         gigPremiumPriceDesc,
@@ -41,7 +40,7 @@ router.route("create").post((req,res) => {
 })
 
 //Get route
-//http:localhost:3001/gigs/
+//http//localhost:3001/gigs/
 
 router.route("/").get((req,res) => {
 
@@ -52,6 +51,51 @@ router.route("/").get((req,res) => {
     })
 })
 
+
+//Update route
+//http//localhost:3001/gigs/update/<gigId> e.g. eGSALDsadsawH
+
+router.route("/update/:gigId").put(async(req,res) => {  //also can use post method to update
+
+    let gigID = req.params.gigId;
+    const {gigTitle,
+        gigCategory,
+        gigSearchTags,
+        gigBasicPriceDesc,
+        gigBasicPrice,
+        gigStandardPriceDesc,
+        gigStandardPrice,
+        gigPremiumPriceDesc,
+        gigPremiumPrice,
+        gigDesc,
+        gigReq} = req.body;
+
+        const updateGig = {
+            gigTitle,
+            gigCategory,
+            gigSearchTags,
+            gigBasicPriceDesc,
+            gigBasicPrice,
+            gigStandardPriceDesc,
+            gigStandardPrice,
+            gigPremiumPriceDesc,
+            gigPremiumPrice,
+            gigDesc,
+            gigReq
+        }
+
+        const update = await Gig.findByIdAndUpdate(gigID, updateGig).then(() =>{
+            
+            res.status(200).send({status:"Gig Updated", Gig:update});
+
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).send({status:"Error with updating data", error: err.message});
+        })
+        
+
+        
+}) 
 
 
 
