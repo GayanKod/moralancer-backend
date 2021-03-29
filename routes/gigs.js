@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { request } = require("express");
 let Gig = require("../models/gig");
 
 
@@ -109,6 +110,17 @@ router.route("/delete/:gigId").delete(async (req,res) => {
 
 //get specific Gig
 ////http//localhost:3001/gigs/get/<gigId> 
+router.route("/get/:gigId").get(async(req,res) =>{
+
+    let gigID = req.params.gigId;
+    const Sgig = await Gig.findById(gigID)
+    .then(() => {
+        res.status(200).send({status:"Gig fetched", gig:Sgig })
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).send({status:"Error with get gig", error: err.message});
+    })
+})
 
 
 
