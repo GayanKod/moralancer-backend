@@ -4,7 +4,7 @@
   "description": "Back-end of the project Mora Lancer which freelancing web application for UoM students",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
