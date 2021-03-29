@@ -92,11 +92,23 @@ router.route("/update/:gigId").put(async(req,res) => {  //also can use post meth
             console.log(err);
             res.status(500).send({status:"Error with updating data", error: err.message});
         })
-        
-
-        
 }) 
 
+
+//Delete Route
+//http//localhost:3001/gigs/delete/<gigId> 
+router.route("/delete/:gigId").delete(async (req,res) => {
+    let GigID = req.params.gigId;
+    await Gig.findByIdAndDelete(GigID).then(() =>{
+        res.status(200).send({status:"User Deleted"})
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).send({status:"Error with deleting data", error: err.message});
+    })
+})
+
+//get specific Gig
+////http//localhost:3001/gigs/get/<gigId> 
 
 
 
