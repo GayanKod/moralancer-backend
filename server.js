@@ -5,6 +5,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 require("dotenv").config();
+const gigsRouter = require("./routes/gigs");
 
 
 const PORT = process.env.PORT || 8070;
@@ -27,6 +28,10 @@ const connection = mongoose.connection;
 connection.once("open", () => {
     console.log("MongoDB is successfully connected!");
 });
+
+
+/*set path to Connect to gigs Router*/
+app.use("/gigs", gigsRouter); 
 
 app.listen(PORT, () => {
     console.log("Server is up and running on PORT 8070");
