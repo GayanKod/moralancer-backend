@@ -40,6 +40,18 @@ router.route("create").post((req,res) => {
 
 })
 
+//Get route
+//http:localhost:3001/gigs/
+
+router.route("/").get((req,res) => {
+
+    Gig.find().then((gigs) =>{
+        res.json(gigs);
+    } ).catch((err) => {
+        console.log(err);
+    })
+})
+
 
 
 
