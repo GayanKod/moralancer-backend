@@ -1,0 +1,25 @@
+{
+  "name": "moralancer-backend",
+  "version": "1.0.0",
+  "description": "Back-end of the project Mora Lancer which freelancing web application for UoM students",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GayanKod/moralancer-backend.git"
+  },
+  "author": "Gayan Kodithuwakku",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GayanKod/moralancer-backend/issues"
+  },
+  "homepage": "https://github.com/GayanKod/moralancer-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.2"
+  }
+}
