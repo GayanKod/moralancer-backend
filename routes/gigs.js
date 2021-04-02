@@ -1,10 +1,24 @@
 const router = require("express").Router();
 const { request } = require("express");
 let Gig = require("../models/gig");
+const multer = require("multer");
+
+
+//Image Configuration
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, "../moralancer/public/uploads");
+    },
+    filename: (req, file, callback) => {
+        callback(null, file.originalname);
+    }
+})
+
+const upload = multer({storage:storage})
 
 
 //http:localhost:3001/gigs/create
-router.route("/create").post((req,res) => {
+router.post("/create", upload.single("gigImage"), (req,res) => {
 
     const gigTitle = req.body.gigTitle;
     const gigCategory = req.body.gigCategory;
@@ -16,7 +30,9 @@ router.route("/create").post((req,res) => {
     const gigPremiumPriceDesc = req.body.gigPremiumPriceDesc;
     const gigPremiumPrice = Number(req.body.gigPremiumPrice);
     const gigDesc = req.body.gigDesc;
+    const gigImage = req.file.originalname;
     const gigReq = req.body.gigReq;
+    
 
     const newGig = new Gig({
         gigTitle,
@@ -29,6 +45,7 @@ router.route("/create").post((req,res) => {
         gigPremiumPriceDesc,
         gigPremiumPrice,
         gigDesc,
+        gigImage,
         gigReq
     })
 
@@ -56,10 +73,11 @@ router.route("/").get((req,res) => {
 //Update route
 //http//localhost:3001/gigs/update/<gigId> e.g. eGSALDsadsawH
 
-router.route("/update/:gigId").put(async(req,res) => {  //also can use post method to update
+router.put("/update/:id", upload.single("gigImage"), async(req,res) => {  //also can use post method to update
 
-    let gigID = req.params.gigId;
-    const {gigTitle,
+    let gigID = req.params.id;
+    const {
+        gigTitle,
         gigCategory,
         gigSearchTags,
         gigBasicPriceDesc,
@@ -70,6 +88,7 @@ router.route("/update/:gigId").put(async(req,res) => {  //also can use post meth
         gigPremiumPrice,
         gigDesc,
         gigReq} = req.body;
+        const gigImage = req.file.originalname;
 
         const updateGig = {
             gigTitle,
@@ -82,6 +101,7 @@ router.route("/update/:gigId").put(async(req,res) => {  //also can use post meth
             gigPremiumPriceDesc,
             gigPremiumPrice,
             gigDesc,
+            gigImage,
             gigReq
         }
 
@@ -98,10 +118,10 @@ router.route("/update/:gigId").put(async(req,res) => {  //also can use post meth
 
 //Delete Route
 //http//localhost:3001/gigs/delete/<gigId> 
-router.route("/delete/:gigId").delete(async (req,res) => {
-    let GigID = req.params.gigId;
+router.route("/delete/:id").delete(async (req,res) => {
+    let GigID = req.params.id;
     await Gig.findByIdAndDelete(GigID).then(() =>{
-        res.status(200).send({status:"User Deleted"})
+        res.status(200).send({status:"Gig Deleted"})
     }).catch((err) => {
         console.log(err);
         res.status(500).send({status:"Error with deleting data", error: err.message});
@@ -110,9 +130,9 @@ router.route("/delete/:gigId").delete(async (req,res) => {
 
 //get specific Gig
 ////http//localhost:3001/gigs/get/<gigId> 
-router.route("/get/:gigId").get(async(req,res) =>{
+router.route("/get/:id").get(async(req,res) =>{
 
-    let gigID = req.params.gigId;
+    let gigID = req.params.id;
     await Gig.findById(gigID)
     .then((gig) => {
         res.status(200).send({status:"Gig fetched",gig})

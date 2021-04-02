@@ -47,6 +47,10 @@ const gigSchema = new Schema({
         required : true
     },
 
+    gigImage : {
+        type : String
+    },
+
     gigReq : {
         type : String,
         required : true
