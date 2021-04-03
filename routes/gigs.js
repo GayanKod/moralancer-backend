@@ -7,7 +7,7 @@ const multer = require("multer");
 //Image Configuration
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, "../moralancer/public/uploads");
+        callback(null, "../moralancer/public/uploads/gigs");
     },
     filename: (req, file, callback) => {
         callback(null, file.originalname);
@@ -76,19 +76,18 @@ router.route("/").get((req,res) => {
 router.put("/update/:id", upload.single("gigImage"), async(req,res) => {  //also can use post method to update
 
     let gigID = req.params.id;
-    const {
-        gigTitle,
-        gigCategory,
-        gigSearchTags,
-        gigBasicPriceDesc,
-        gigBasicPrice,
-        gigStandardPriceDesc,
-        gigStandardPrice,
-        gigPremiumPriceDesc,
-        gigPremiumPrice,
-        gigDesc,
-        gigReq} = req.body;
-        const gigImage = req.file.originalname;
+    const gigTitle = req.body.gigTitle;
+    const gigCategory = req.body.gigCategory;
+    const gigSearchTags = req.body.gigSearchTags;
+    const gigBasicPriceDesc = req.body.gigBasicPriceDesc;
+    const gigBasicPrice = Number(req.body.gigBasicPrice);
+    const gigStandardPriceDesc = req.body.gigStandardPriceDesc;
+    const gigStandardPrice = Number(req.body.gigStandardPrice);
+    const gigPremiumPriceDesc = req.body.gigPremiumPriceDesc;
+    const gigPremiumPrice = Number(req.body.gigPremiumPrice);
+    const gigDesc = req.body.gigDesc;
+    const gigImage = req.body.gigImage;
+    const gigReq = req.body.gigReq;
 
         const updateGig = {
             gigTitle,
@@ -105,7 +104,11 @@ router.put("/update/:id", upload.single("gigImage"), async(req,res) => {  //also
             gigReq
         }
 
-        const update = await Gig.findByIdAndUpdate(gigID, updateGig).then(() =>{
+        if (req.file){
+            updateGig.gigImage = req.file.originalname;
+        }
+
+        await Gig.findByIdAndUpdate(gigID, updateGig).then(() =>{
             
             res.status(200).send({status:"Gig Updated"});
 
