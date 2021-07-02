@@ -338,7 +338,8 @@ exports.googleController = (req, res) => {
     .verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT })
     .then(response => {
       // console.log('GOOGLE LOGIN RESPONSE',response)
-      const { email_verified, name, email } = response.payload;
+      const { email_verified, name, email, picture } = response.payload;
+      console.log(response.payload);
       if (email_verified) {
         User.findOne({ email }).exec((err, user) => {
           if (user) {
@@ -348,7 +349,7 @@ exports.googleController = (req, res) => {
             const { _id, email, name, role } = user;
             return res.json({
               token,
-              user: { _id, email, name, role }
+              user: { _id, email, name, role, picture }
             });
           } else {
             let password = email + process.env.JWT_SECRET;
@@ -365,10 +366,10 @@ exports.googleController = (req, res) => {
                 process.env.JWT_SECRET,
                 { expiresIn: '7d' }
               );
-              const { _id, email, name, role } = data;
+              const { _id, email, name, role, picture } = data;
               return res.json({
                 token,
-                user: { _id, email, name, role }
+                user: { _id, email, name, role, picture }
               });
             });
           }
